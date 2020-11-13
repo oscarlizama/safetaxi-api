@@ -17,9 +17,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'tipoUsuario',
+        'nombre',
+        'apellido',
+        'sexo',
+        'fechaNacimiento'
     ];
 
     /**
@@ -40,4 +44,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function conductor(){
+        return $this->hasOne('App\Models\Conductor', 'user_id', 'id');
+    }
+
 }
