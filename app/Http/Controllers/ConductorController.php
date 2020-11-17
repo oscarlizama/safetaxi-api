@@ -116,14 +116,24 @@ class ConductorController extends Controller
     public function destroy($id){
         try {
             $conductor = Conductor::findOrFail($id);
-            //$persona = Persona::where('id', $conductor->persona_id)->first();
             $usuario = User::where('id', $conductor->user_id)->first();
             $conductor->delete();            
             $usuario->delete();
-            //$persona->delete();
             return response()->json($conductor, 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'No encontrado'], 404);
         }
     }
+
+    public function servicio($id){
+        try {
+            $conductor = Conductor::findOrFail($id);
+            $conductor->estadoContratado = !($conductor->estadoContratado);
+            $conductor->save();
+            return response()->json($conductor, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'No encontrado'], 404);
+        }
+    }
+
 }

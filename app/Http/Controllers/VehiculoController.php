@@ -8,14 +8,14 @@ use App\Models\Vehiculo;
 class VehiculoController extends Controller
 {
     public function index(){
-        $vehiculos = Vehiculo::with('conductor')->get();
+        $vehiculos = Vehiculo::with('conductor')->get()->where('enServicio', "=", true);;
         return response()->json($vehiculos);
     }
 
     public function show($id){
         if ($vehiculo = Vehiculo::find($id)) {
             $vehiculo = Vehiculo::with('conductor')->where('id', '=', $id)->first();
-            return response()->json($vehiculo, 404);
+            return response()->json($vehiculo, 201);
         } else {
             return response()->json(['Error' => 'No encontrado'], 404);
         }
@@ -73,6 +73,7 @@ class VehiculoController extends Controller
                 'numeroTarjetaCirculacion' => 'required',
                 'conductor_id' => 'required'
             ]);
+            $data = $request;
             $vehiculo->matricula = $data['matricula'];
             $vehiculo->capacidad = $data['capacidad'];
             $vehiculo->numeroChasis = $data['numeroChasis'];
@@ -81,7 +82,7 @@ class VehiculoController extends Controller
             $vehiculo->modelo = $data['modelo'];
             $vehiculo->clase = $data['clase'];
             $vehiculo->color = $data['color'];
-            $vehiculo->color = $data['tipoVehiculo'];
+            $vehiculo->tipoVehiculo = $data['tipoVehiculo'];
             $vehiculo->numeroTarjetaCirculacion = $data['numeroTarjetaCirculacion'];
             $vehiculo->conductor_id = $data['conductor_id'];
             $vehiculo->save();
@@ -97,6 +98,17 @@ class VehiculoController extends Controller
         try {
             $vehiculo = Vehiculo::findOrFail($id);
             $vehiculo->delete();            
+            return response()->json($vehiculo, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'No encontrado'], 404);
+        }
+    }
+
+    public function servicio($id){
+        try {
+            $vehiculo = Vehiculo::findOrFail($id);
+            $vehiculo->enServicio = !($vehiculo->enServicio);
+            $vehiculo->save();
             return response()->json($vehiculo, 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'No encontrado'], 404);

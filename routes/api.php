@@ -23,6 +23,7 @@ Route::get('conductores/', [Controllers\ConductorController::class, 'index'])->n
 Route::post('conductores/', [Controllers\ConductorController::class, 'store'])->name('conductores.store');
 Route::get('conductores/{id}', [Controllers\ConductorController::class, 'show'])->name('conductores.show');
 Route::put('conductores/{id}', [Controllers\ConductorController::class, 'update'])->name('conductores.update');
+Route::put('conductores/servicio/{id}', [Controllers\ConductorController::class, 'servicio'])->name('conductores.servicio');
 Route::delete('conductores/{id}', [Controllers\ConductorController::class, 'destroy'])->name('conductores.delete');
 
 Route::get('usuarios/', [Controllers\UserController::class, 'index'])->name('usuarios.index');
@@ -35,6 +36,7 @@ Route::get('vehiculos/', [Controllers\VehiculoController::class, 'index'])->name
 Route::post('vehiculos/', [Controllers\VehiculoController::class, 'store'])->name('vehiculos.store');
 Route::get('vehiculos/{id}', [Controllers\VehiculoController::class, 'show'])->name('vehiculos.show');
 Route::put('vehiculos/{id}', [Controllers\VehiculoController::class, 'update'])->name('vehiculos.update');
+Route::put('vehiculos/servicio/{id}', [Controllers\VehiculoController::class, 'servicio'])->name('vehiculos.servicio');
 Route::delete('vehiculos/{id}', [Controllers\VehiculoController::class, 'destroy'])->name('vehiculos.delete');
 
 Route::get('horarios/conductor/{idConductor}', [Controllers\HorarioController::class, 'index'])->name('horarios.index');
