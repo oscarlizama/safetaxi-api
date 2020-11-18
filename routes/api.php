@@ -32,11 +32,12 @@ Route::get('usuarios/{id}', [Controllers\UserController::class, 'show'])->name('
 Route::put('usuarios/{id}', [Controllers\UserController::class, 'update'])->name('usuarios.update');
 Route::delete('usuarios/{id}', [Controllers\UserController::class, 'destroy'])->name('usuarios.delete');
 
-Route::get('vehiculos/', [Controllers\VehiculoController::class, 'index'])->name('vehiculos.index');
+Route::get('vehiculos/estado/{estado}', [Controllers\VehiculoController::class, 'index'])->name('vehiculos.index');
 Route::post('vehiculos/', [Controllers\VehiculoController::class, 'store'])->name('vehiculos.store');
 Route::get('vehiculos/{id}', [Controllers\VehiculoController::class, 'show'])->name('vehiculos.show');
 Route::put('vehiculos/{id}', [Controllers\VehiculoController::class, 'update'])->name('vehiculos.update');
 Route::put('vehiculos/servicio/{id}', [Controllers\VehiculoController::class, 'servicio'])->name('vehiculos.servicio');
+//Route::post('vehiculos/upload/', [Controllers\VehiculoController::class, 'uploadFile'])->name('vehiculos.upload');
 Route::delete('vehiculos/{id}', [Controllers\VehiculoController::class, 'destroy'])->name('vehiculos.delete');
 
 Route::get('horarios/conductor/{idConductor}', [Controllers\HorarioController::class, 'index'])->name('horarios.index');
@@ -44,3 +45,9 @@ Route::post('horarios/', [Controllers\HorarioController::class, 'store'])->name(
 Route::get('horarios/{id}', [Controllers\HorarioController::class, 'show'])->name('horarios.show');
 Route::put('horarios/{id}', [Controllers\HorarioController::class, 'update'])->name('horarios.update');
 Route::delete('horarios/{id}', [Controllers\HorarioController::class, 'destroy'])->name('horarios.delete');
+
+Route::get('tarifas/', [Controllers\TarifaController::class, 'index'])->name('tarifas.index');
+Route::post('tarifas/', [Controllers\TarifaController::class, 'store'])->name('tarifas.store');
+Route::get('tarifas/{id}', [Controllers\TarifaController::class, 'show'])->name('tarifas.show');
+Route::put('tarifas/{id}', [Controllers\TarifaController::class, 'update'])->name('tarifas.update');
+Route::delete('tarifas/{id}', [Controllers\TarifaController::class, 'destroy'])->name('tarifas.delete');

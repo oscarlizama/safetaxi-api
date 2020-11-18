@@ -20,7 +20,6 @@ class Vehiculo extends Model
         'clase',
         'color',
         'numeroTarjetaCirculacion',
-        'archivoTarjetaCirculacion',
         'enServicio'
     ];
 

@@ -7,8 +7,8 @@ use App\Models\Vehiculo;
 
 class VehiculoController extends Controller
 {
-    public function index(){
-        $vehiculos = Vehiculo::with('conductor')->get()->where('enServicio', "=", true);;
+    public function index($estado){
+        $vehiculos = Vehiculo::with('conductor')->get()->where('enServicio', "=", $estado);
         return response()->json($vehiculos);
     }
 
@@ -23,21 +23,20 @@ class VehiculoController extends Controller
 
     public function store(Request $request){
         $data = $request->validate([
-            'matricula' => 'required',
+            'matricula' => 'required|unique:vehiculos',
             'capacidad' => 'required',
-            'numeroChasis' => 'required',
+            'numeroChasis' => 'required|unique:vehiculos',
             'anio' => 'required',
             'marca' => 'required',
             'modelo' => 'required',
             'tipoVehiculo' => 'required',
             'clase' => 'required',
             'color' => 'required',
-            'numeroTarjetaCirculacion' => 'required',
-            'conductor_id' => 'required'
+            'numeroTarjetaCirculacion' => 'required|unique:vehiculos',
+            'conductor_id' => 'required|unique:vehiculos'
         ]);
         try{
             $vehiculo = new Vehiculo();
-
             $vehiculo->matricula = $data['matricula'];
             $vehiculo->capacidad = $data['capacidad'];
             $vehiculo->numeroChasis = $data['numeroChasis'];
@@ -50,7 +49,6 @@ class VehiculoController extends Controller
             $vehiculo->numeroTarjetaCirculacion = $data['numeroTarjetaCirculacion'];
             $vehiculo->conductor_id = $data['conductor_id'];
             $vehiculo->save();
-
             $vehiculo = Vehiculo::with('conductor')->where('id', '=', $vehiculo->id)->first();
             return response()->json($vehiculo, 201);
         } catch(ModelNotFoundException $e){
@@ -73,7 +71,6 @@ class VehiculoController extends Controller
                 'numeroTarjetaCirculacion' => 'required',
                 'conductor_id' => 'required'
             ]);
-            $data = $request;
             $vehiculo->matricula = $data['matricula'];
             $vehiculo->capacidad = $data['capacidad'];
             $vehiculo->numeroChasis = $data['numeroChasis'];
@@ -114,5 +111,20 @@ class VehiculoController extends Controller
             return response()->json(['error' => 'No encontrado'], 404);
         }
     }
+
+    /*public function uploadFile(Request $request){
+        $id = $request['id'];
+        if($vehiculo = Vehiculo::find($id)){
+            $archivo = $request->file('archivo');
+            $filename = $archivo->getClientOriginalName();
+            $archivo->move("/home/archivos/tarjetas/", $archivo->getClientOriginalName());
+            $path = "/home/archivos/tarjetas/" . $id . $filename;
+            $vehiculo->archivoTarjetaCirculacion = $path;
+            $vehiculo->save();
+            return response()->json($filename, 200);
+        }else{
+            return response()->json(['error' => 'No encontrado'], 404);
+        }
+    }*/
 
 }

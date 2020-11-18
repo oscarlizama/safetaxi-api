@@ -25,7 +25,6 @@ class CreateVehiculosTable extends Migration
             $table->string('clase', 15);
             $table->string('color', 20);
             $table->string('numeroTarjetaCirculacion', 20);
-            $table->string('archivoTarjetaCirculacion', 20)->nullable();
             $table->bigInteger('conductor_id')->nullable()->unsigned();
             $table->foreign('conductor_id')->references('id')->on('conductores')->onDelete('cascade');
             $table->boolean('enServicio', 20)->default(1);
