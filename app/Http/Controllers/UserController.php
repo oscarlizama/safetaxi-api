@@ -44,7 +44,6 @@ class UserController extends Controller
                 $usuario->apellido = $data['apellido'];
                 $usuario->sexo = $data['sexo'];
                 $usuario->fechaNacimiento = $data['fechaNacimiento'];
-                $usuario->user_id = $usuario->id;
                 $usuario->save();
                 return response()->json($usuario, 201);
             } catch(ModelNotFoundException $e){
@@ -85,9 +84,7 @@ class UserController extends Controller
     public function destroy($id){
         try {
             $usuario = User::findOrFail($id);
-            $persona = Persona::where('user_id', $usuario->id)->first();
             $usuario->delete();
-            $persona->delete();
             return response()->json($persona, 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'No encontrado'], 404);
