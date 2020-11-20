@@ -20,7 +20,7 @@ class ConductorController extends Controller
         if ($conductor = Conductor::find($id)) {
             //$persona = Persona::where('conductor_id', $conductor->id)->first();
             $conductor = Conductor::with('user')->where('id', '=', $id)->first();
-            return response()->json($conductor, 404);
+            return response()->json($conductor, 200);
         } else {
             return response()->json(['Error' => 'No encontrado'], 404);
         }
@@ -33,7 +33,7 @@ class ConductorController extends Controller
                 'apellido' => 'required',
                 'sexo' => 'required',
                 'email' => 'required',
-                'password' => 'required',
+                'password' => 'nullable',
                 'fechaNacimiento' => 'required',
                 'fechaContratacion' => 'required',
                 'licenciaConducir' => 'required',
@@ -42,19 +42,15 @@ class ConductorController extends Controller
             try{
                 $conductor = new Conductor();
                 $usuario = new User();
-                //$persona = new Persona();
                 
                 $usuario->email = $data['email'];
-                $usuario->password = Hash::make($data['password']);
+                $usuario->password = Hash::make(rand(pow(10, 5-1), pow(10, 5)-1));
                 $usuario->tipoUsuario = 'C';
-                //$usuario->save();
                 
                 $usuario->nombre = $data['nombre'];
                 $usuario->apellido = $data['apellido'];
                 $usuario->sexo = $data['sexo'];
                 $usuario->fechaNacimiento = $data['fechaNacimiento'];
-                /*$persona->user_id = $usuario->id;
-                $persona->save();*/
                 $usuario->save();
 
                 $conductor->fechaContratacion = $data['fechaContratacion'];
@@ -81,13 +77,12 @@ class ConductorController extends Controller
                 'apellido' => 'required',
                 'sexo' => 'required',
                 'email' => 'required',
-                'password' => 'required',
+                'password' => 'nullable',
                 'fechaNacimiento' => 'required',
                 'fechaContratacion' => 'required',
                 'licenciaConducir' => 'required',
                 'dui' => 'required'
             ]);
-            //$persona = Persona::where('id', $conductor->persona_id)->first();
             $usuario = User::where('id', $conductor->user_id)->first();
             
             $usuario->nombre = $data['nombre'];
@@ -96,14 +91,13 @@ class ConductorController extends Controller
             $usuario->fechaNacimiento = $data['fechaNacimiento'];
 
             $usuario->email = $data['email'];
-            $usuario->password = Hash::make($data['password']);
+            //$usuario->password = Hash::make($data['password']);
 
             $conductor->fechaContratacion = $data['fechaContratacion'];
             $conductor->licenciaConducir = $data['licenciaConducir'];
             $conductor->dui = $data['dui'];
             
             $usuario->save();
-            //$persona->save();
             $conductor->save();
             
             return response()->json($conductor, 200);
