@@ -23,13 +23,22 @@ class HorarioController extends Controller
     }
 
     public function store(Request $request){
-        $data = $request->validate([
-            'dia' =>'required',
-            'horaInicio' =>'required',
-            'horaFin' =>'required',
-            'disponible' =>'required',
-            'conductor_id' =>'required'
-        ]);
+        if ($request->has('disponible')){
+            $data = $request->validate([
+                'dia' =>'required',
+                'horaInicio' =>'required',
+                'horaFin' =>'required',
+                'disponible' =>'required',
+                'conductor_id' =>'required'
+            ]);
+        }else{
+            $data = $request->validate([
+                'dia' =>'required',
+                'horaInicio' =>'required',
+                'horaFin' =>'required',
+                'conductor_id' =>'required'
+            ]);
+        }
         try{
             $horario = Horario::create($data);
             return response()->json($horario, 201);

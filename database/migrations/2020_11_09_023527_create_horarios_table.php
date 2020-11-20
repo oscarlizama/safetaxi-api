@@ -18,7 +18,7 @@ class CreateHorariosTable extends Migration
             $table->string('dia', 15);
             $table->time('horaInicio');
             $table->time('horaFin');
-            $table->boolean('disponible');
+            $table->boolean('disponible')->default(false);
             $table->bigInteger('conductor_id')->unsigned();
             $table->foreign('conductor_id')->references('id')->on('conductores')->onDelete('cascade');
             $table->timestamps();
