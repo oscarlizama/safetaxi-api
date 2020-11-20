@@ -11,8 +11,8 @@ use App\Models\User;
 
 class ConductorController extends Controller
 {
-    public function index(){
-        $conductores = Conductor::with('user')->get();
+    public function index($estado){
+        $conductores = Conductor::with('user')->get()->where('estadoContratado', "=", $estado);;
         return response()->json($conductores);
     }
 

@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('conductores/', [Controllers\ConductorController::class, 'index'])->name('conductores.index');
+Route::get('conductores/estado/{estado}', [Controllers\ConductorController::class, 'index'])->name('conductores.index');
 Route::post('conductores/', [Controllers\ConductorController::class, 'store'])->name('conductores.store');
 Route::get('conductores/{id}', [Controllers\ConductorController::class, 'show'])->name('conductores.show');
 Route::put('conductores/{id}', [Controllers\ConductorController::class, 'update'])->name('conductores.update');
