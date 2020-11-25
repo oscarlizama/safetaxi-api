@@ -40,6 +40,11 @@ class HorarioController extends Controller
             ]);
         }
         try{
+            if(date('H:i', strtotime($data['horaInicio'])) > date('H:i', strtotime($data['horaFin'])))
+                return response()->json(['error' => 'La hora de inicio es mayor a la de fin'], 401);
+            $existeHorario = Horario::whereBetween('horaInicio',[$data['horaInicio'], $data['horaFin']])->count();
+            if($existeHorario >= 1)
+                return response()->json(['error' => 'Ya hay un horario asignado a esa hora'], 401);
             $horario = Horario::create($data);
             return response()->json($horario, 201);
         }catch(ModelNotFoundException $e){
@@ -73,7 +78,7 @@ class HorarioController extends Controller
         try {
             $horario = Horario::findOrFail($id);
             $horario->delete();
-            return response()->json($horario, 200);
+            return response()->json(["res" => "Registro eliminado"], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'No encontrado'], 404);
         }

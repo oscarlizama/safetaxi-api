@@ -7,7 +7,7 @@ use App\Models\Vehiculo;
 class VehiculoController extends Controller
 {
     public function index($estado){
-        $vehiculos = Vehiculo::with('conductor')->get()->where('enServicio', "=", $estado);
+        $vehiculos = Vehiculo::with('conductor')->get()->where('enServicio', $estado);
         return response()->json($vehiculos);
     }
 
@@ -70,6 +70,15 @@ class VehiculoController extends Controller
                 'numeroTarjetaCirculacion' => 'required',
                 'conductor_id' => 'required'
             ]);
+            $existeVehiculo = Vehiculo::where('id', '!=', $id)->where(function ($query) use ($data){
+                $query->where('matricula', $data['matricula'])
+                    ->orWhere('numeroChasis', $data['numeroChasis'])
+                    ->orWhere('numeroTarjetaCirculacion', $data['numeroTarjetaCirculacion'])
+                    ->orWhere('conductor_id', $data['conductor_id']);
+            })->count();
+            if($existeVehiculo >= 1){
+                return response()->json(['Error' => 'El vehículo ya ha sido registrado'], 401);
+            }
             $vehiculo->matricula = $data['matricula'];
             $vehiculo->capacidad = $data['capacidad'];
             $vehiculo->numeroChasis = $data['numeroChasis'];

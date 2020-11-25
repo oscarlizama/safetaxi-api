@@ -32,12 +32,12 @@ class ConductorController extends Controller
                 'nombre' => 'required',
                 'apellido' => 'required',
                 'sexo' => 'required',
-                'email' => 'required',
+                'email' => 'required|unique:users',
                 'password' => 'nullable',
                 'fechaNacimiento' => 'required',
                 'fechaContratacion' => 'required',
-                'licenciaConducir' => 'required',
-                'dui' => 'required'
+                'licenciaConducir' => 'required|unique:conductores',
+                'dui' => 'required|unique:conductores'
             ]);
             try{
                 $conductor = new Conductor();
@@ -83,8 +83,19 @@ class ConductorController extends Controller
                 'licenciaConducir' => 'required',
                 'dui' => 'required'
             ]);
-            $usuario = User::where('id', $conductor->user_id)->first();
+                        
+            $existe = Conductor::where('id', '!=', $id)->where(function($query) use ($data){ 
+                $query->where('licenciaConducir', $data['licenciaConducir'])->orWhere('dui', $data['dui']);
+            })->count();
+            if($existe >= 1)
+                return response()->json(['error' => 'Existe el registro'], 401);
             
+            
+            $existeEmail = User::where('id', '!=', $conductor->user_id)->where('email', $data['email'])->count();
+            if($existeEmail >= 1)
+                return response()->json(['error' => 'El email ya ha sido registrado'], 401);
+
+            $usuario = User::where('id', $conductor->user_id)->first();
             $usuario->nombre = $data['nombre'];
             $usuario->apellido = $data['apellido'];
             $usuario->sexo = $data['sexo'];
