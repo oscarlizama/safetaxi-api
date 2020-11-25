@@ -42,7 +42,7 @@ class HorarioController extends Controller
         try{
             if(date('H:i', strtotime($data['horaInicio'])) > date('H:i', strtotime($data['horaFin'])))
                 return response()->json(['error' => 'La hora de inicio es mayor a la de fin'], 401);
-            $existeHorario = Horario::whereBetween('horaInicio',[$data['horaInicio'], $data['horaFin']])->count();
+            $existeHorario = Horario::whereBetween('horaInicio',[$data['horaInicio'], $data['horaFin']])->where('dia', $data['dia'])->count();
             if($existeHorario >= 1)
                 return response()->json(['error' => 'Ya hay un horario asignado a esa hora'], 401);
             $horario = Horario::create($data);
