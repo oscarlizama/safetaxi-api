@@ -42,7 +42,7 @@ class HorarioController extends Controller
         try{
             if(date('H:i', strtotime($data['horaInicio'])) > date('H:i', strtotime($data['horaFin'])))
                 return response()->json(['error' => 'La hora de inicio es mayor a la de fin'], 401);
-            $existeHorario = Horario::whereBetween('horaInicio',[$data['horaInicio'], $data['horaFin']])->where('dia', $data['dia'])->count();
+            $existeHorario = Horario::whereBetween('horaInicio',[$data['horaInicio'], $data['horaFin']])->where('dia', $data['dia'])->where('conductor_id', '=', $data['conductor_id'])->count();
             if($existeHorario >= 1)
                 return response()->json(['error' => 'Ya hay un horario asignado a esa hora'], 401);
             $horario = Horario::create($data);
@@ -81,6 +81,21 @@ class HorarioController extends Controller
             return response()->json(["res" => "Registro eliminado"], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'No encontrado'], 404);
+        }
+    }
+
+    public function getConductoresDisponibles($data){
+        $hora = $data['hora'];
+        try{
+            $conductores = Horario::select('conductor_id')
+                ->where('horaInicio', '<', $hora)
+                ->where('horaFin', '>', $hora)
+                ->where('disponible', '=', true)
+                ->groupBy('conductor_id')
+                ->get();
+            return $conductores;
+        }catch(Exception $ex){
+            return response()->json(['Error' => "No encontrado"], 404);
         }
     }
 

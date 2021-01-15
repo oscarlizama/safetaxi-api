@@ -16,6 +16,7 @@ class Conductor extends Model
         'archivoLicencia',
         'archivoDui',
         'estadoContratado',
+        'enServicio',
         'user_id'
     ];
 
@@ -23,7 +24,11 @@ class Conductor extends Model
         return $this->hasOne(Vehiculo::class);
     }
 
-    public function horario(){
+    public function viajes(){
+        return $this->hasMany(Viaje::class);
+    }
+
+    public function horarios(){
         return $this->hasMany(Horario::class);
     }
 

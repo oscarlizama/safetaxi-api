@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Conductor;
-//use App\Models\Persona;
+use App\Http\Controllers\Horario;
 use App\Models\User;
 
 class ConductorController extends Controller
@@ -140,5 +140,25 @@ class ConductorController extends Controller
             return response()->json(['error' => 'No encontrado'], 404);
         }
     }
+
+    public function getConductoresDisponibles(Request $request){
+        $data = $request;
+        try{
+            $conductores = Conductor::whereHas('horarios', function($query) use ($data) {
+                $query->where('horaInicio', '<', $data['hora'])
+                ->where('horaFin', '>', $data['hora'])
+                ->where('dia', '=', $data['dia'])
+                ->where('disponible', '=', true)
+                ->groupBy('conductor_id');
+            })
+            ->where('enServicio', false)
+            ->with('user')
+            ->get();
+            return response()->json($conductores, 201);
+        }catch(Exception $ex){
+            return response()->json(['Error' => $e], 404);
+        }
+    }
+
 
 }

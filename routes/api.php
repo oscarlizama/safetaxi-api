@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('conductores/estado/{estado}', [Controllers\ConductorController::class, 'index'])->name('conductores.index');
+Route::post('conductoreshorarios/', [Controllers\ConductorController::class, 'getConductoresDisponibles'])->name('conductores.getConductoresDisponibles');
 Route::post('conductores/', [Controllers\ConductorController::class, 'store'])->name('conductores.store');
 Route::get('conductores/{id}', [Controllers\ConductorController::class, 'show'])->name('conductores.show');
 Route::put('conductores/{id}', [Controllers\ConductorController::class, 'update'])->name('conductores.update');
@@ -47,7 +48,15 @@ Route::put('horarios/{id}', [Controllers\HorarioController::class, 'update'])->n
 Route::delete('horarios/{id}', [Controllers\HorarioController::class, 'destroy'])->name('horarios.delete');
 
 Route::get('tarifas/', [Controllers\TarifaController::class, 'index'])->name('tarifas.index');
-Route::post('tarifas/', [Controllers\TarifaController::class, 'store'])->name('tarifas.store');
 Route::get('tarifas/{id}', [Controllers\TarifaController::class, 'show'])->name('tarifas.show');
+Route::post('tarifasviaje/', [Controllers\TarifaController::class, 'tarifasViaje'])->name('tarifas.tarifasViaje');
+Route::post('tarifas/', [Controllers\TarifaController::class, 'store'])->name('tarifas.store');
 Route::put('tarifas/{id}', [Controllers\TarifaController::class, 'update'])->name('tarifas.update');
 Route::delete('tarifas/{id}', [Controllers\TarifaController::class, 'destroy'])->name('tarifas.delete');
+
+Route::get('viajes/estado/{estado}', [Controllers\ViajeController::class, 'getSolicitudesViaje'])->name('viajes.index');
+Route::post('viajesolicitar/', [Controllers\ViajeController::class, 'solicitarViaje'])->name('viajes.solicitarViaje');
+Route::post('viajesasignar/{id}', [Controllers\ViajeController::class, 'asignarViaje'])->name('viajes.asignarViaje');
+Route::get('viajesterminar/{id}', [Controllers\ViajeController::class, 'terminarViaje'])->name('viajes.terminarViaje');
+Route::get('viajesrechazar/{id}', [Controllers\ViajeController::class, 'rechazarViaje'])->name('viajes.rechazarViaje');
+Route::get('viajes/{id}', [Controllers\ViajeController::class, 'getViaje'])->name('viajes.getViaje');

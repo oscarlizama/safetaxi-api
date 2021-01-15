@@ -12,7 +12,7 @@ class Tarifa extends Model
         'valor',
         'identificar',
         'fechaInicioTarifa',
-        'fachaFinTarifa',
+        'fechaFinTarifa',
         'horaInicioTarifa',
         'horaFinTarifa'
     ];

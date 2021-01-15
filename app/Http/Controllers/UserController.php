@@ -47,7 +47,7 @@ class UserController extends Controller
                 $usuario->save();
                 return response()->json($usuario, 201);
             } catch(ModelNotFoundException $e){
-                return response()->json(['error' => 'No se ha podido crear un conductor'], 404);
+                return response()->json(['error' => 'No se ha podido crear un usuario'], 404);
             }
         //}else{
             //return response()->json(['error' => 'No es un JSON válido'], 400, []);
@@ -85,7 +85,7 @@ class UserController extends Controller
         try {
             $usuario = User::findOrFail($id);
             $usuario->delete();
-            return response()->json($persona, 200);
+            return response()->json($usuario, 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'No encontrado'], 404);
         }

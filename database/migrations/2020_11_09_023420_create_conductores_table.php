@@ -20,7 +20,8 @@ class CreateConductoresTable extends Migration
             $table->string('dui', 10);
             $table->string('archivoLicencia')->nullable();
             $table->string('archivoDui')->nullable();
-            $table->boolean('estadoContratado')->default(1);
+            $table->boolean('estadoContratado')->default(true);
+            $table->boolean('enServicio')->default(false);
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

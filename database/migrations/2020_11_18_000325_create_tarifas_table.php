@@ -16,8 +16,8 @@ class CreateTarifasTable extends Migration
         Schema::create('tarifas', function (Blueprint $table) {
             $table->id();
             $table->string('criterio', 50);
-            $table->float('valor', 8, 2);
-            $table->unsignedInteger('identificar');
+            $table->decimal('valor', 8, 2);
+            $table->string('identificar', 1);
             $table->date('fechaInicioTarifa')->nullable();
             $table->date('fechaFinTarifa')->nullable();
             $table->time('horaInicioTarifa')->nullable();
