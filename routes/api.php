@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('login', [Controllers\AuthController::class, 'login'])->name('login');
+
 Route::get('conductores/estado/{estado}', [Controllers\ConductorController::class, 'index'])->name('conductores.index');
 Route::post('conductoreshorarios/', [Controllers\ConductorController::class, 'getConductoresDisponibles'])->name('conductores.getConductoresDisponibles');
 Route::post('conductores/', [Controllers\ConductorController::class, 'store'])->name('conductores.store');
